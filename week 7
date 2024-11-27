@@ -1,0 +1,124 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node *left, *right;
+};
+
+struct node* newnode(int val) {
+    struct node* temp = (struct node*)malloc(sizeof(struct node));
+    temp->data = val;
+    temp->left = temp->right = NULL;
+    return temp;
+}
+
+struct node* insertnode(struct node* Node, int val) {
+    if (Node == NULL) {
+        return newnode(val);
+    }
+    if (val < Node->data) {
+        Node->left = insertnode(Node->left, val);
+    } else if (val > Node->data) {
+        Node->right = insertnode(Node->right, val);
+    }
+    return Node;
+}
+
+void postorder(struct node* root) {
+    if (root == NULL) {
+        return;
+    }
+    postorder(root->left);
+    postorder(root->right);
+    printf("%d ", root->data);
+}
+
+void inorder(struct node* root) {
+    if (root == NULL) {
+        return;
+    }
+    inorder(root->left);
+    printf("%d ", root->data);
+    inorder(root->right);
+}
+
+void preorder(struct node* root) {
+    if (root == NULL) {
+        return;
+    }
+    printf("%d ", root->data);
+    preorder(root->left);
+    preorder(root->right);
+}
+
+int main() {
+    struct node* root = NULL;
+    int choice, val;
+
+    while (1) {
+        printf("1. Insert a node\n");
+        printf("2. Inorder traversal\n");
+        printf("3. Preorder traversal\n");
+        printf("4. Postorder traversal\n");
+        printf("5. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter value to insert: ");
+                scanf("%d", &val);
+                root = insertnode(root, val);
+                break;
+
+            case 2:
+                printf("Inorder traversal: ");
+                inorder(root);
+                printf("\n");
+                break;
+
+            case 3:
+                printf("Preorder traversal: ");
+                preorder(root);
+                printf("\n");
+                break;
+
+            case 4:
+                printf("Postorder traversal: ");
+                postorder(root);
+                printf("\n");
+                break;
+
+            case 5:
+                printf("Exiting program.\n");
+                return 0;
+
+            default:
+                printf("Invalid choice\n");
+        }
+    }
+
+    return 0;
+}
+
+
+
+............................................................................................
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+struct TreeNode* searchBST(struct TreeNode* root, int val) {
+     if (root == NULL || root->val == val) {
+        return root;
+    }
+    if (root->val > val) {
+        return searchBST(root->left, val); 
+    }
+    return searchBST(root->right, val); 
+}
